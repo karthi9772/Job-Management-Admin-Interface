@@ -5,26 +5,27 @@ import Navbar from './components/Navbar';
 import JobForm from './components/JobForm';
 
 function App() {
-  const [isJobFormVisible, setJobFormVisible] = useState(false);
+  // const [isJobFormVisible, setJobFormVisible] = useState(false);
 
-  const toggleJobForm = () => {
-    setJobFormVisible((prev) => !prev);
-  };
+  // const toggleJobForm = () => {
+  //   setJobFormVisible((prev) => !prev);
+  // };
 
-  const closeJobForm = () => {
-    setJobFormVisible(false);
-  };
+  // const closeJobForm = () => {
+  //   setJobFormVisible(false);
+  // };
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 font-satoshi">
-        <Navbar onJobsClick={toggleJobForm} />
+      {/* <div className=" bg-gray-50 font-satoshi"> */}
+        {/* <Navbar onJobsClick={toggleJobForm} /> */}
         <Routes>
           <Route path="/" element={<Navigate to="/jobs" />} />
           <Route path="/jobs" element={<Home />} />
+          <Route path="/jobs/new" element={<JobForm />} />
         </Routes>
 
-        {/* JobForm Modal */}
+        {/* JobForm Modal
         {isJobFormVisible && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -37,9 +38,10 @@ function App() {
               <JobForm onSuccess={closeJobForm} />
             </div>
           </div>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
     </Router>
+    // <JobForm />
   );
 }
 
