@@ -34,7 +34,7 @@ export default function JobForm({ onSuccess }) {
     >
       <h2 className="text-xl font-semibold text-center">Create Job Opening</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-4 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Job Title</label>
           <input

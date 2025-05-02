@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ onJobsClick }) => {
   const { pathname } = useLocation();
 
   const isActive = (path) =>
@@ -26,12 +26,11 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link
-            to="/find-jobs"
-            className={`${isActive('/find-jobs')} hover:text-black transition duration-200`}
+          <button
+            className="hover:text-black transition duration-200 text-[#6B7280]"
           >
-            Find Jobs
-          </Link>
+            Jobs
+          </button>
           <Link
             to="/find-talents"
             className={`${isActive('/find-talents')} hover:text-black transition duration-200`}
@@ -54,12 +53,12 @@ const Navbar = () => {
 
         {/* Create Job CTA */}
         <div className="flex justify-center w-1/7">
-          <Link
-            to="/jobs/new"
+          <button
+            onClick={onJobsClick} // Toggle JobForm modal
             className="px-5 py-2.5 bg-gradient-to-t from-[#6100AD] to-[#A128FF] text-white text-md rounded-full font-medium hover:brightness-110 transition duration-200"
           >
             Create Jobs
-          </Link>
+          </button>
         </div>
       </nav>
     </div>
