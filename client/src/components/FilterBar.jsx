@@ -9,22 +9,23 @@ const FilterBar = ({ onFilter }) => {
     title: '',
     location: '',
     jobType: '',
-    salaryRange: [0, 2000000], // Min and Max salary
+    salaryRange: [0, 2000000], 
   });
 
   const handleChange = (name, value) => {
     const updated = { ...filters, [name]: value };
     setFilters(updated);
+    onFilter(updated); // Trigger the filter update
   };
 
   const handleFilterUpdate = (name, value) => {
     const updated = { ...filters, [name]: value };
     setFilters(updated);
-    onFilter(updated); // Trigger the filter update only after the mouse is released
+    onFilter(updated); 
   };
 
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-wrap gap-6 font-satoshi">
+    <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-wrap gap-6 font-[satoshi] font-weight-500 text-md">
       {/* Job Title */}
       <div className="flex flex-col w-[200px]">
         <label className="text-sm text-[#4B5563] font-medium mb-1">Job Title</label>
@@ -77,8 +78,8 @@ const FilterBar = ({ onFilter }) => {
             max={2000000}
             step={10000}
             value={filters.salaryRange}
-            onChange={(value) => handleChange('salaryRange', value)} // Update state while dragging
-            onAfterChange={(value) => handleFilterUpdate('salaryRange', value)} // Trigger filter update only after mouse release
+            onChange={(value) => setFilters({ ...filters, salaryRange: value })} // Update state while dragging
+            onChangeComplete={(value) => handleFilterUpdate('salaryRange', value)} // Trigger filter update only after mouse release
             trackStyle={[{ backgroundColor: 'black' }]}
             handleStyle={[
               { borderColor: 'black', backgroundColor: 'white' },
