@@ -1,9 +1,10 @@
 import React from "react";
+import JobForm from "./components/JobForm";
 
 const App = () => {
   return (
     <div>
-      <h1 className="underline">App</h1>
+      <JobForm />
     </div>
   );
 };
