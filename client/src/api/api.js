@@ -18,10 +18,10 @@ export const getJobs = async (filters = {}) => {
 // Create a new job
 export const createJob = async (jobData) => {
   try {
-    const response = await axios.post(API_BASE_URL, jobData);
+    const response = await axios.post(`${API_BASE_URL}/jobs`, jobData);
     return response.data;
   } catch (error) {
     console.error('Error creating job:', error);
     throw error;
   }
-};
+}

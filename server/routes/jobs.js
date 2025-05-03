@@ -51,21 +51,27 @@ router.get('/', async (req, res) => {
 
 // POST: Create a new Job
 router.post('/', async (req, res) => {
-  const { job_title, location, job_type, salary_min, salary_max, ...rest } = req.body;
+  const jobData = req.body;
+
+  const fields = Object.keys(jobData);
+  const values = Object.values(jobData);
+
+  const placeholders = fields.map((_, i) => `$${i + 1}`).join(', ');
 
   const query = `
-    INSERT INTO jobs (job_title, location, job_type, salary_min, salary_max)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO jobs (${fields.join(', ')})
+    VALUES (${placeholders})
     RETURNING *;
   `;
 
   try {
-    const { rows } = await pool.query(query, [job_title, location, job_type, salary_min, salary_max]);
+    const { rows } = await pool.query(query, values);
     res.status(201).json(rows[0]);
   } catch (error) {
-    console.error(error);
+    console.error('Insert error:', error);
     res.status(500).json({ error: 'Failed to insert job' });
   }
 });
+
 
 module.exports = router;
