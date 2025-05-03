@@ -1,6 +1,3 @@
-
-
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { createJob } from '../api/api.js'; // Make sure this path is correct

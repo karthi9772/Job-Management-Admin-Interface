@@ -59,27 +59,27 @@ const Home = () => {
         {/* Navigation */}
         <Link
           to="/"
-          className={`${isActive('/')} hover:text-black transition duration-200`}
+          className={`${isActive('/')} hover:text-black transition-all duration-200 ease-in-out hover:shadow-lg hover:translate-x-1  rounded-md bg-white px-4 py-2`}
         >
           Home
         </Link>
         <h2
-          className="hover:text-black transition duration-200 text-[#6B7280] cursor-pointer"
+          className={`hover:text-black transition-all duration-200 ease-in-out hover:shadow-lg hover:translate-x-1  rounded-md bg-white px-4 py-2 text-[#6B7280] cursor-pointer`}
         >
           Jobs
         </h2>
         <h2
-          className={`hover:text-black px-4 py-2 hover:bg- transition duration-200 ${isActive('/find-talents')} cursor-pointer`}
+          className={`hover:text-black transition-all duration-200 ease-in-out hover:shadow-lg hover:translate-x-1  rounded-md bg-white px-4 py-2 ${isActive('/find-talents')} cursor-pointer`}
         >
           Find Talents
         </h2>
         <h2
-          className={`hover:text-black transition duration-200 ${isActive('/about')} cursor-pointer`}
+          className={`hover:text-black transition-all duration-200 ease-in-out hover:shadow-lg hover:translate-x-1  rounded-md bg-white px-4 py-2 ${isActive('/about')} cursor-pointer`}
         >
           About Us
         </h2>
         <h2
-          className={`hover:text-black transition duration-200 ${isActive('/testimonials')} cursor-pointer`}
+          className={`hover:text-black transition-all duration-200 ease-in-out hover:shadow-lg hover:translate-x-1  rounded-md bg-white px-4 py-2 ${isActive('/testimonials')} cursor-pointer`}
         >
           Testimonials
         </h2>
