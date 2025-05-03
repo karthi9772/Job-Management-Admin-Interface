@@ -9,7 +9,8 @@ const app = express();
 
 app.use(cors({
   origin: [
-      'http://localhost:5173'
+    'https://job-management-admin-interface-9ras.vercel.app',
+    'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
