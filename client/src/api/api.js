@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://job-management-admin-interface-kvr7y2jfz-karthi-gs-projects.vercel.app';
+const API_BASE_URL = 'https://job-management-admin-interface-olive.vercel.app';
 
 // Fetch jobs with optional filters
 export const getJobs = async (filters = {}) => {
