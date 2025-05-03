@@ -7,7 +7,6 @@ dotenv.config();
 
 const app = express();
 
-// Configure CORS to allow access from all origins for every request
 app.use(cors({
   origin: '*'
 }));
