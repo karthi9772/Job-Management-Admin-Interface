@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://job-management-admin-interface-olive.vercel.app';
+const API_BASE_URL = 'https://job-management-admin-interface-olive.vercel.app/api';
 
 // Fetch jobs with optional filters
 export const getJobs = async (filters = {}) => {
   try {
-    const response = await axios.get(API_BASE_URL, { params: filters });
+    const response = await axios.get(`${API_BASE_URL}/jobs`, { params: filters });
     return response.data;
   } catch (error) {
     console.error('Error fetching jobs:', error);
