@@ -6,7 +6,12 @@ const jobsRoute = require('./routes/jobs');
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow access from all origins for every request
+app.use(cors({
+  origin: '*'
+}));
+
 app.use(express.json());
 
 // Routes
