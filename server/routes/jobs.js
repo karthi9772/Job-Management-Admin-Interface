@@ -1,46 +1,71 @@
 const express = require('express');
-const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
+const { Pool } = require('pg');
+const pool = require('../db'); // import the pool
 
+require('dotenv').config();
 
 const router = express.Router();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+// Create a PostgreSQL pool using the transaction pooler URL
 
 // GET: All Jobs with optional filters
 router.get('/', async (req, res) => {
   const { title, location, jobType, minSalary, maxSalary } = req.query;
 
-  let query = supabase.from('jobs').select('*');
+  let conditions = [];
+  let values = [];
 
-  if (title) query = query.ilike('job_title', `%${title}%`);
-  if (location) query = query.ilike('location', `%${location}%`);
-  if (jobType) query = query.eq('job_type', jobType);
-
-  if (minSalary && maxSalary) {
-    query = query
-      .gte('salary_max', parseInt(minSalary)) // job must offer at least what user wants
-      .lte('salary_min', parseInt(maxSalary)); // job must not start beyond user's max
-  } else if (minSalary) {
-    query = query.gte('salary_max', parseInt(minSalary));
-  } else if (maxSalary) {
-    query = query.lte('salary_min', parseInt(maxSalary));
+  if (title) {
+    conditions.push(`job_title ILIKE $${values.length + 1}`);
+    values.push(`%${title}%`);
+  }
+  if (location) {
+    conditions.push(`location ILIKE $${values.length + 1}`);
+    values.push(`%${location}%`);
+  }
+  if (jobType) {
+    conditions.push(`job_type = $${values.length + 1}`);
+    values.push(jobType);
   }
 
-  const { data, error } = await query;
+  if (minSalary) {
+    conditions.push(`salary_max >= $${values.length + 1}`);
+    values.push(parseInt(minSalary));
+  }
+  if (maxSalary) {
+    conditions.push(`salary_min <= $${values.length + 1}`);
+    values.push(parseInt(maxSalary));
+  }
 
-  if (error) return res.status(500).json({ error });
-  res.json(data);
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+  const query = `SELECT * FROM jobs ${whereClause}`;
+
+  try {
+    const { rows } = await pool.query(query, values);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Database query failed' });
+  }
 });
 
 // POST: Create a new Job
 router.post('/', async (req, res) => {
-  const jobData = req.body;
+  const { job_title, location, job_type, salary_min, salary_max, ...rest } = req.body;
 
-  const { data, error } = await supabase.from('jobs').insert([jobData]);
+  const query = `
+    INSERT INTO jobs (job_title, location, job_type, salary_min, salary_max)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *;
+  `;
 
-  if (error) return res.status(500).json({ error });
-  res.status(201).json(data);
+  try {
+    const { rows } = await pool.query(query, [job_title, location, job_type, salary_min, salary_max]);
+    res.status(201).json(rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to insert job' });
+  }
 });
 
 module.exports = router;
