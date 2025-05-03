@@ -1,117 +1,125 @@
-// import React from 'react';
-
-// const JobCard = ({ job }) => {
-//   return (
-//     <div className="bg-white shadow-md rounded-2xl p-6 border border-gray-200 w-full max-w-xl mx-auto">
-//       <div className="flex justify-between items-start mb-4">
-//         <div>
-//           <h2 className="text-xl font-semibold text-gray-800">{job.title}</h2>
-//           <p className="text-sm text-gray-500 mt-1">{job.company}</p>
-//         </div>
-//         <span
-//           className={`text-xs font-medium px-3 py-1 rounded-full ${
-//             job.type === 'Full-time'
-//               ? 'bg-green-100 text-green-600'
-//               : job.type === 'Internship'
-//               ? 'bg-blue-100 text-blue-600'
-//               : job.type === 'Part-time'
-//               ? 'bg-yellow-100 text-yellow-600'
-//               : 'bg-purple-100 text-purple-600'
-//           }`}
-//         >
-//           {job.type}
-//         </span>
-//       </div>
-
-//       <div className="flex items-center text-sm text-gray-500 gap-4 mb-4">
-//         <div className="flex items-center gap-1">
-//           <img src="/location-icon.svg" alt="Location" className="w-4 h-4" />
-//           <span>{job.location}</span>
-//         </div>
-//         <div className="flex items-center gap-1">
-//           <img src="/salary-icon.svg" alt="Salary" className="w-4 h-4" />
-//           <span>{job.salary}</span>
-//         </div>
-//       </div>
-
-//       <p className="text-sm text-gray-600 line-clamp-2 mb-5">{job.description}</p>
-
-//       <div className="flex justify-end">
-//         <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow-sm transition duration-200">
-//           Apply Now
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default JobCard;
-
-
 import React from "react";
-import { Briefcase, LocateIcon, Clock, Wallet, Building2 } from "lucide-react";
 
-const JobCard = ({job}) => {
+const JobCard = ({ job }) => {
+  // Conditional rendering of company logo based on company name
+
+  const getTimeAgo = (createdAt) => {
+    const now = new Date();
+    const posted = new Date(createdAt);
+    const diffMs = now - posted;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+  
+    if (diffMinutes < 1) return "Just now";
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${diffDays}d ago`;
+  };
+
+  const getCompanyLogo = (companyName) => {
+    if (!companyName) return "/company/office.png";
+  
+    const name = companyName.toLowerCase().trim();
+  
+    switch (name) {
+      case "amazon":
+        return "/company/amazon.png";
+      case "apple":
+        return "/company/apple.png";
+      case "cybermind":
+        return "/company/cybermind.png";
+      case "facebook":
+        return "/company/facebook.png";
+      case "google":
+        return "/company/google.png";
+      case "microsoft":
+        return "/company/microsoft.png";
+      case "tesla":
+        return "/company/tesla.png";
+      case "swiggy":
+        return "/company/swiggy.png";
+      default:
+        return "/company/office.png";
+    }
+  };
+  
 
   return (
-    <div className="border rounded-2xl p-4 flex flex-col gap-4 shadow-sm">
-      {/* Top Section: Logo + Company Info */}
-      
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-4">
-          <img
+    <div className="bg-white rounded-2xl shadow-sm p-5 relative border border-gray-200">
+      {/* Posted Time */}
+      <span className="absolute top-4 right-4 bg-[#B0D9FF] text-[#000000] text-sm font-medium px-3 py-1 rounded-full">
+  {getTimeAgo(job.created_at)}
+</span>
 
-            src={""}
-            alt="company logo"
-            className="w-14 h-14 rounded-xl object-cover"
-          />
-          <div>
-            <h2 className="text-xl font-semibold">{job.job_title}</h2>
-            <p className="text-gray-600">{job.company_name}</p>
-          </div>
-        </div>
-        <div className="text-sm text-gray-500">24h ago</div>
+      {/* Company Logo */}
+      <div className="w-16 h-16 mb-4 bg-gradient-to-t from-[#F1F1F1] to-[#FEFEFD] flex items-center justify-center shadow-md rounded-xl">
+        <img
+          src={getCompanyLogo(job.company_name)}
+          alt="Company Logo"
+          className="w-full h-full object-contain rounded-full p-2"
+        />
       </div>
 
-      {/* Job Tags */}
-      <div className="flex flex-wrap gap-2">
-        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-          {job.job_type}
-        </span>
-        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
-          1-3 yr Exp
-        </span>
-        <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-          Onsite
-        </span>
+      {/* Job Title */}
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">{job.job_title}</h3>
+
+      {/* Job Info */}
+      <div className="flex flex-nowrap gap-x-4 gap-y-2 text-sm text-gray-600 mb-4">
+        {/* Experience */}
+        <div className="flex items-center gap-1">
+          {/* <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A9.001 9.001 0 0112 3a9.001 9.001 0 016.879 14.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg> */}
+          <img src="/icons/exp.png" alt="sute" />
+
+         <span className="text-nowrap">
+         {job.experience || '1-3 yr Exp'}
+          </span> 
+        </div>
+
+        {/* Location */}
+        <div className="flex items-center gap-1">
+          {/* <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.5c0 7.5-7.5 13-7.5 13s-7.5-5.5-7.5-13a7.5 7.5 0 1115 0z" />
+          </svg> */}
+          <img src="/icons/site.png" alt="sute" />
+          {job.location || 'Onsite'}
+        </div>
+
+        {/* Salary */}
+        <div className="flex items-center gap-1">
+          {/* <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3 0 1.301.839 2.402 2 2.816M12 4v1m0 14v1m8-9h.01M4 12h.01" />
+          </svg> */}
+          <img src="/icons/lpa.png" alt="sute" />
+          {/* <span className="text-gray-500">₹{job.salary}</span> */}
+          {/* <span className="text-gray-500">₹{job.salary_min} - ₹{job.salary_max}</span> */}
+          {job.salary || '12LPA'}
+        </div>
       </div>
 
-      {/* Job Description */}
-      <p className="text-gray-700 text-sm">
-        {job.job_description.length > 100
-          ? `${job.job_description.slice(0, 100)}...`
-          : job.job_description}
-      </p>
+      {/* Description */}
+{job.job_description ? (
+  <ul className="text-sm space-y-1 text-gray-700 list-disc list-outside pl-5 mb-4">
+    {job.job_description
+      .split(".")
+      .map((sentence) => sentence.trim())
+      .filter((sentence) => sentence.length > 0)
+      .map((point, index) => (
+        <li key={index}>{point}.</li>
+      ))}
+  </ul>
+) : (
+  <p className="text-sm text-gray-500 mb-4">No description available.</p>
+)}
 
-      {/* Icons Section */}
-      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-        <div className="flex items-center gap-2">
-          <LocateIcon size={18} />
-          <span>{job.location}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Clock size={18} />
-          <span>Fulltime</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Wallet size={18} />
-          <span>{`₹ ${job.salary_min} - ${job.salary_max}`}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Briefcase size={18} />
-          <span>1-3 yr Exp</span>
-        </div>
-      </div>
+
+      {/* Apply Button */}
+      <button className="w-full cursor-pointer bg-[#00AAFF] hover:bg-[#007BDB] text-white font-medium py-2 rounded-lg transition" onClick={() => alert('Application submitted!')}>
+        Apply Now
+      </button>
     </div>
   );
 };

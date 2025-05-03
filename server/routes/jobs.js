@@ -16,8 +16,16 @@ router.get('/', async (req, res) => {
   if (title) query = query.ilike('job_title', `%${title}%`);
   if (location) query = query.ilike('location', `%${location}%`);
   if (jobType) query = query.eq('job_type', jobType);
-  if (minSalary) query = query.gte('salary_min', parseInt(minSalary));
-  if (maxSalary) query = query.lte('salary_max', parseInt(maxSalary));
+
+  if (minSalary && maxSalary) {
+    query = query
+      .gte('salary_max', parseInt(minSalary)) // job must offer at least what user wants
+      .lte('salary_min', parseInt(maxSalary)); // job must not start beyond user's max
+  } else if (minSalary) {
+    query = query.gte('salary_max', parseInt(minSalary));
+  } else if (maxSalary) {
+    query = query.lte('salary_min', parseInt(maxSalary));
+  }
 
   const { data, error } = await query;
 

@@ -43,12 +43,12 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="relative w-full bg-[#FFFFFF] ">
       {/* NavBar */}
        <div className="py-4 font-weight-600 text-md">
-      <nav className="w-[75%] mx-auto border-b border-[#E5E7EB] bg-[#FCFCFC] px-8 py-4 rounded-full flex items-center justify-evenly">
+      <nav className="w-[65%] mx-auto drop-shadow-lg border-[#E5E7EB] bg-[#FFFFFF]  py-3 rounded-full flex items-center justify-evenly">
         {/* Logo */}
-        <Link to="/" className="flex justify-center w-1/7">
+        <Link to="/" className="">
           <img
             src="/icons/company-logo.png"
             alt="Logo"
@@ -85,10 +85,10 @@ const Home = () => {
         </h2>
 
         {/* Create Job CTA */}
-        <div className="flex justify-center w-1/7">
+        <div className="flex justify-end">
           <button
             onClick={toggleJobForm}
-            className="px-5 py-2.5 bg-gradient-to-t from-[#6100AD] to-[#A128FF] text-white text-md rounded-full font-medium hover:brightness-110 transition duration-200"
+            className="px-5 py-2.5 text-nowrap bg-gradient-to-t from-[#6100AD] to-[#A128FF] text-white text-md rounded-full font-medium hover:brightness-130 cursor-pointer transition duration-200"
           >
             Create Jobs
           </button>
@@ -103,7 +103,9 @@ const Home = () => {
 
 
       {/* Job List - Responsive Grid */}
-      <div className="mt-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
+      <div className='w-full  bg-white mx-0 shadow-md'>  
+      <div className="mt-8 mx-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  p-4 rounded-lg ">
         {loading ? (
           <p className="text-gray-600">Loading jobs...</p>
         ) : jobs.length === 0 ? (
@@ -112,6 +114,8 @@ const Home = () => {
           jobs.map((job) => <JobCard key={job.id} job={job} />)
         )}
       </div>
+      </div>
+      
 
       {isJobFormVisible && (
           <div
@@ -122,7 +126,13 @@ const Home = () => {
               className="bg-white rounded-lg shadow-lg w-full max-w-2xl"
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
             >
-              <JobForm onSuccess={closeJobForm} />
+               <JobForm
+               closeJobForm={closeJobForm}
+              onSuccess={() => {
+             closeJobForm();
+            fetchJobs();
+        }}
+      />
             </div>
           </div>
         )}
